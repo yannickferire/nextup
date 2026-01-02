@@ -139,23 +139,23 @@ const content: Record<TabId, Line[]> = {
     empty(),
     [
       { text: "✓ ", color: "green" },
-      { text: "Trust badge", color: "purple" },
-      { text: " added", color: "gray" },
+      { text: "Early spots badge", color: "purple" },
+      { text: " with live count", color: "gray" },
     ],
     [
       { text: "✓ ", color: "green" },
-      { text: "Visual hierarchy", color: "purple" },
-      { text: " improved", color: "gray" },
+      { text: "Text opacity", color: "purple" },
+      { text: " increased", color: "gray" },
     ],
     [
       { text: "✓ ", color: "green" },
-      { text: "CTA button", color: "purple" },
-      { text: " stands out more", color: "gray" },
+      { text: "CTA", color: "purple" },
+      { text: " bigger + gradient bg + icon", color: "gray" },
     ],
     [
       { text: "✓ ", color: "green" },
-      { text: "Reassurance copy", color: "purple" },
-      { text: " below form", color: "gray" },
+      { text: "Input placeholder", color: "purple" },
+      { text: " simplified", color: "gray" },
     ],
     empty(),
     [
@@ -166,7 +166,7 @@ const content: Record<TabId, Line[]> = {
       { text: "Conversion: ", color: "gray" },
       { text: "0.89%", color: "orange" },
       { text: " → ", color: "gray" },
-      { text: "~2.5%", color: "green" },
+      { text: "~4%", color: "green" },
     ],
     [
       { text: "Trust score: ", color: "gray" },
