@@ -67,17 +67,17 @@ export function DemoSuggestion({
   isLoading,
 }: DemoSuggestionProps) {
   return (
-    <div className="border-t border-border p-4 bg-foreground/5">
-      <div className="flex flex-col gap-3">
+    <div className="border-t border-border p-3 sm:p-4 bg-foreground/5">
+      <div className="flex flex-col gap-2 sm:gap-3">
         <div>
-          <p className="text-xs opacity-50 mb-1">Nextup suggestion</p>
+          <p className="text-[10px] sm:text-xs opacity-50 mb-1">Nextup suggestion</p>
           {enhanced ? (
-            <p className="text-sm opacity-50">
+            <p className="text-xs sm:text-sm opacity-50">
               This is what Nextup does: analyze your data, suggest
               improvements, and help you ship faster. Then repeat.
             </p>
           ) : (
-            <p className="text-sm">
+            <p className="text-xs sm:text-sm">
               Your landing lacks hierarchy and the CTA doesn&apos;t stand out
               enough. Add trust signals to boost conversions.
             </p>
@@ -88,7 +88,7 @@ export function DemoSuggestion({
           <Button
             onClick={onApply}
             disabled={enhanced || isLoading}
-            className={`h-12 px-6 ${
+            className={`h-10 sm:h-12 px-4 sm:px-6 text-sm sm:text-base ${
               enhanced
                 ? "bg-foreground/10 text-foreground/50"
                 : "bg-white text-black hover:bg-white/90"
@@ -96,18 +96,21 @@ export function DemoSuggestion({
           >
             {isLoading ? (
               <>
-                <SpinnerIcon className="w-5 h-5 animate-spin" />
-                Apply suggestion
+                <SpinnerIcon className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                <span className="hidden sm:inline">Apply suggestion</span>
+                <span className="sm:hidden">Applying...</span>
               </>
             ) : enhanced ? (
               <>
-                <CheckIcon className="w-5 h-5" />
-                Feature applied
+                <CheckIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="hidden sm:inline">Feature applied</span>
+                <span className="sm:hidden">Applied</span>
               </>
             ) : (
               <>
-                <BuildIcon className="w-5 h-5" />
-                Apply suggestion
+                <BuildIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="hidden sm:inline">Apply suggestion</span>
+                <span className="sm:hidden">Apply</span>
               </>
             )}
           </Button>

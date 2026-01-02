@@ -37,38 +37,37 @@ export function Hero() {
   const shouldAnimate = hasTransitioned;
 
   return (
-    <section className="flex-1 ml-8 mr-8 border-l border-r border-border flex items-center">
-      <div className="w-full flex items-center justify-between gap-12 ml-8 pl-8">
+    <section className="flex-1 mx-4 md:mx-8 md:border-l md:border-r border-border flex items-center overflow-y-auto">
+      <div className="w-full flex flex-col lg:flex-row items-center lg:justify-between gap-8 lg:gap-12 py-8 lg:py-0 lg:ml-8 lg:pl-8">
         {/* Left side - Content */}
-        <article className="max-w-lg flex flex-col gap-6">
+        <article className="lg:-mt-8 max-w-lg flex flex-col gap-4 md:gap-6 px-4 lg:px-0 text-center lg:text-left">
           {/* Early bird badge - only visible when enhanced */}
-          <div className="h-8">
+          {enhanced && (
+          <div className="h-8 flex justify-center lg:justify-start">
             <AnimatePresence>
-              {enhanced && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
                 >
-                  <span className="inline-flex items-center gap-2 text-sm border border-primary/30 bg-primary/5 rounded-full px-3 py-1.5">
+                  <span className="inline-flex items-center gap-2 text-xs md:text-sm border border-primary/30 bg-primary/5 rounded-full px-3 py-1.5">
                     <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                     <span>
                       <span className="font-medium">
                         {spotsRemaining !== null ? spotsRemaining : "..."} early spots left
                       </span>
-                      <span className="opacity-70">
+                      <span className="opacity-70 hidden sm:inline">
                         {" "}
                         — get a special offer at launch
                       </span>
                     </span>
                   </span>
                 </motion.div>
-              )}
             </AnimatePresence>
           </div>
-
+          )}
           <motion.h1
-            className="text-5xl tracking-wide text-balance"
+            className="text-3xl md:text-4xl lg:text-5xl tracking-wide text-balance"
             style={{ opacity: enhanced ? 1 : 0.8 }}
             initial={false}
             animate={{ opacity: enhanced ? 1 : 0.8 }}
@@ -78,7 +77,7 @@ export function Hero() {
           </motion.h1>
 
           <motion.div
-            className="text-lg tracking-wide"
+            className="text-base md:text-lg tracking-wide"
             style={{ opacity: enhanced ? 0.8 : 0.5 }}
             initial={false}
             animate={{ opacity: enhanced ? 0.8 : 0.5 }}
@@ -88,17 +87,17 @@ export function Hero() {
               Nextup analyzes your real growth data to forge the features your
               users are actually searching for.
             </p>
-            <p className="text-sm mt-2 opacity-70">
+            <p className="text-sm mt-2 opacity-70 hidden sm:block">
               Get feature suggestions + prompts to vibe code in your favorite
               IDE.
             </p>
           </motion.div>
 
-          <form action={formAction} className="w-full max-w-sm">
+          <form action={formAction} className="w-full max-w-sm mx-auto lg:mx-0">
             <Label htmlFor={id} className="sr-only">
               Email address
             </Label>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               {!state?.success && (
                 <div className="flex-1">
                   <Input
@@ -194,7 +193,7 @@ export function Hero() {
         </article>
 
         {/* Right side - Demo */}
-        <div className="shrink-0">
+        <div className="shrink-0 w-full lg:w-auto px-4 lg:px-0">
           <DemoWindow
             enhanced={enhanced}
             onApply={handleApply}

@@ -26,10 +26,20 @@ export async function joinWaitlist(formData: FormData) {
 }
 
 export async function getEarlySpotsRemaining() {
+  if (!process.env.RESEND_API_KEY || !process.env.RESEND_AUDIENCE_ID) {
+    console.error("Missing RESEND_API_KEY or RESEND_AUDIENCE_ID");
+    return TOTAL_EARLY_SPOTS;
+  }
+
   try {
-    const { data } = await resend.contacts.list({
-      audienceId: process.env.RESEND_AUDIENCE_ID!,
+    const { data, error } = await resend.contacts.list({
+      audienceId: process.env.RESEND_AUDIENCE_ID,
     });
+
+    if (error) {
+      console.error("Resend API error:", error);
+      return TOTAL_EARLY_SPOTS;
+    }
 
     const contactCount = data?.data?.length ?? 0;
     return Math.max(0, TOTAL_EARLY_SPOTS - contactCount);
