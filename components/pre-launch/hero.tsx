@@ -1,16 +1,32 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useState, useActionState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DemoWindow } from "./demo";
+import { joinWaitlist, getEarlySpotsRemaining } from "@/app/actions/waitlist";
 
 export function Hero() {
   const id = useId();
   const [enhanced, setEnhanced] = useState(false);
   const [hasTransitioned, setHasTransitioned] = useState(false);
+  const [spotsRemaining, setSpotsRemaining] = useState<number | null>(null);
+  const [state, formAction, isPending] = useActionState(
+    async (_prevState: { success?: boolean; error?: string } | null, formData: FormData) => {
+      const result = await joinWaitlist(formData);
+      if (result.success) {
+        setSpotsRemaining((prev) => (prev !== null ? Math.max(0, prev - 1) : null));
+      }
+      return result;
+    },
+    null
+  );
+
+  useEffect(() => {
+    getEarlySpotsRemaining().then(setSpotsRemaining);
+  }, []);
 
   const handleApply = () => {
     setHasTransitioned(true);
@@ -37,7 +53,9 @@ export function Hero() {
                   <span className="inline-flex items-center gap-2 text-sm border border-primary/30 bg-primary/5 rounded-full px-3 py-1.5">
                     <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                     <span>
-                      <span className="font-medium">50 early spots</span>
+                      <span className="font-medium">
+                        {spotsRemaining !== null ? spotsRemaining : "..."} early spots left
+                      </span>
                       <span className="opacity-70">
                         {" "}
                         — get a special offer at launch
@@ -51,6 +69,7 @@ export function Hero() {
 
           <motion.h1
             className="text-5xl tracking-wide text-balance"
+            style={{ opacity: enhanced ? 1 : 0.8 }}
             initial={false}
             animate={{ opacity: enhanced ? 1 : 0.8 }}
             transition={{ duration: 0.4, delay: shouldAnimate && enhanced ? 0.1 : 0 }}
@@ -60,6 +79,7 @@ export function Hero() {
 
           <motion.div
             className="text-lg tracking-wide"
+            style={{ opacity: enhanced ? 0.8 : 0.5 }}
             initial={false}
             animate={{ opacity: enhanced ? 0.8 : 0.5 }}
             transition={{ duration: 0.4, delay: shouldAnimate && enhanced ? 0.2 : 0 }}
@@ -74,31 +94,41 @@ export function Hero() {
             </p>
           </motion.div>
 
-          <div className="w-full max-w-sm">
+          <form action={formAction} className="w-full max-w-sm">
             <Label htmlFor={id} className="sr-only">
               Email address
             </Label>
             <div className="flex gap-3">
-              <div className="flex-1">
-                <Input
-                  id={id}
-                  type="email"
-                  placeholder={
-                    enhanced ? "you@email.com" : "Enter your email address"
-                  }
-                  className={`h-12 transition-all duration-500 ${
-                    enhanced
-                      ? "border-white/50 text-white placeholder:text-white/70"
-                      : ""
-                  }`}
-                  style={{
-                    transitionDelay: shouldAnimate && enhanced ? "300ms" : "0ms",
-                  }}
-                />
-              </div>
+              {!state?.success && (
+                <div className="flex-1">
+                  <Input
+                    id={id}
+                    name="email"
+                    type="email"
+                    required
+                    disabled={isPending}
+                    placeholder={
+                      enhanced ? "you@email.com" : "Enter your email address"
+                    }
+                    className={`h-12 transition-all duration-500 ${
+                      enhanced
+                        ? "border-white/50 text-white placeholder:text-white/70"
+                        : ""
+                    }`}
+                    style={{
+                      transitionDelay: shouldAnimate && enhanced ? "300ms" : "0ms",
+                    }}
+                  />
+                </div>
+              )}
 
               <motion.div
                 initial={false}
+                style={{
+                  background: enhanced
+                    ? "linear-gradient(to right, #8b2c0d, #6b2008)"
+                    : "rgb(255, 255, 255)",
+                }}
                 animate={{
                   background: enhanced
                     ? "linear-gradient(to right, #8b2c0d, #6b2008)"
@@ -108,17 +138,18 @@ export function Hero() {
                 className="rounded-md"
               >
                 <Button
-                  type="submit"
+                  type={state?.success ? "button" : "submit"}
+                  disabled={isPending}
                   className={`h-12 px-6 ring-offset-background transition-all duration-500 text-base font-semibold ${
                     enhanced
                       ? "bg-transparent text-white hover:ring-2 hover:ring-primary/90 hover:ring-offset-2"
                       : "bg-transparent text-black hover:bg-white/90"
-                  }`}
+                  } ${state?.success ? "cursor-default" : ""}`}
                   style={{
                     transitionDelay: shouldAnimate && enhanced ? "400ms" : "0ms",
                   }}
                 >
-                  {enhanced && (
+                  {enhanced && !state?.success && (
                     <motion.svg
                       initial={{ opacity: 0, scale: 0.5 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -135,17 +166,31 @@ export function Hero() {
                       <path d="M22 2L15 22L11 13L2 9L22 2Z" />
                     </motion.svg>
                   )}
-                  <motion.span
-                    initial={false}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {enhanced ? "Join waitlist" : "Subscribe"}
-                  </motion.span>
+                  {state?.success ? (
+                    <span className="flex items-center gap-2">
+                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                        <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      You&apos;re in!
+                    </span>
+                  ) : isPending ? (
+                    <span>Joining...</span>
+                  ) : (
+                    <motion.span
+                      initial={false}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {enhanced ? "Join waitlist" : "Subscribe"}
+                    </motion.span>
+                  )}
                 </Button>
               </motion.div>
             </div>
-          </div>
+            {state?.error && (
+              <p className="text-red-400 text-sm mt-2">{state.error}</p>
+            )}
+          </form>
         </article>
 
         {/* Right side - Demo */}
