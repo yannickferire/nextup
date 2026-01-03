@@ -34,7 +34,7 @@ export function DemoWindow({ onApply, enhanced }: DemoWindowProps) {
   };
 
   return (
-    <div className="w-full lg:w-2xl border border-border lg:border-l lg:border-y lg:border-r-0 rounded-lg lg:rounded-l-lg lg:rounded-r-none overflow-hidden font-mono text-xs sm:text-sm">
+    <div className="relative w-full lg:w-2xl border border-border lg:border-l lg:border-y lg:border-r-0 rounded-lg lg:rounded-l-lg lg:rounded-r-none overflow-hidden font-mono text-xs sm:text-sm bg-background">
       {/* Window header with macOS dots */}
       <div className="flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 border-b border-border bg-foreground/5">
         <div className="flex gap-1.5">

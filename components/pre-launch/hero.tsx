@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState, useActionState, useEffect } from "react";
+import { useId, useState, useActionState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,7 @@ import { joinWaitlist, getEarlySpotsRemaining } from "@/app/actions/waitlist";
 
 export function Hero() {
   const id = useId();
+  const inputRef = useRef<HTMLInputElement>(null);
   const [enhanced, setEnhanced] = useState(false);
   const [hasTransitioned, setHasTransitioned] = useState(false);
   const [spotsRemaining, setSpotsRemaining] = useState<number | null>(null);
@@ -31,6 +32,10 @@ export function Hero() {
   const handleApply = () => {
     setHasTransitioned(true);
     setEnhanced(true);
+    // Focus the email input after animations
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 500);
   };
 
   // Only animate with delays if we're transitioning to enhanced (not on initial load)
@@ -101,6 +106,7 @@ export function Hero() {
               {!state?.success && (
                 <div className="flex-1">
                   <Input
+                    ref={inputRef}
                     id={id}
                     name="email"
                     type="email"
@@ -193,7 +199,59 @@ export function Hero() {
         </article>
 
         {/* Right side - Demo */}
-        <div className="shrink-0 w-full lg:w-auto px-4 lg:px-0">
+        <div className="relative shrink-0 w-full lg:w-auto px-4 lg:px-0">
+          {/* Glow effect - top */}
+          <motion.div
+            className="absolute -top-4 left-1/2 -translate-x-1/2 w-4/5 h-24 -z-10 blur-3xl rounded-full"
+            style={{
+              background: "var(--primary)",
+              opacity: enhanced ? 0.3 : 0,
+            }}
+            initial={false}
+            animate={{
+              opacity: enhanced ? 0.3 : 0,
+            }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          />
+          {/* Glow effect - left */}
+          <motion.div
+            className="absolute -left-10 top-[55%] -translate-y-1/2 w-28 h-4/5 -z-10 blur-3xl rounded-full"
+            style={{
+              background: "var(--primary)",
+              opacity: enhanced ? 0.3 : 0,
+            }}
+            initial={false}
+            animate={{
+              opacity: enhanced ? 0.3 : 0,
+            }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+          />
+          {/* Glow effect - right (only on desktop) */}
+          <motion.div
+            className="hidden lg:block absolute -right-10 top-[55%] -translate-y-1/2 w-28 h-4/5 -z-10 blur-3xl rounded-full"
+            style={{
+              background: "var(--primary)",
+              opacity: enhanced ? 0.3 : 0,
+            }}
+            initial={false}
+            animate={{
+              opacity: enhanced ? 0.3 : 0,
+            }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+          />
+          {/* Glow effect - bottom */}
+          <motion.div
+            className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-4/5 h-20 -z-10 blur-3xl rounded-full"
+            style={{
+              background: "var(--primary)",
+              opacity: enhanced ? 0.2 : 0,
+            }}
+            initial={false}
+            animate={{
+              opacity: enhanced ? 0.2 : 0,
+            }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.15 }}
+          />
           <DemoWindow
             enhanced={enhanced}
             onApply={handleApply}
