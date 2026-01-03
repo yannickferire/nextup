@@ -157,6 +157,21 @@ const content: Record<TabId, Line[]> = {
       { text: "Input placeholder", color: "purple" },
       { text: " simplified", color: "gray" },
     ],
+    [
+      { text: "✓ ", color: "green" },
+      { text: "Glow effect", color: "purple" },
+      { text: " for more depth", color: "gray" },
+    ],
+    [
+      { text: "✓ ", color: "green" },
+      { text: "Accent color", color: "purple" },
+      { text: " on key message in title", color: "gray" },
+    ],
+    [
+      { text: "✓ ", color: "green" },
+      { text: "Trust element", color: "purple" },
+      { text: " below CTA", color: "gray" },
+    ],
     empty(),
     [
       { text: "## ", color: "gray" },

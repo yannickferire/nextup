@@ -43,7 +43,7 @@ export function Hero() {
 
   return (
     <section className="flex-1 mx-4 md:mx-8 md:border-l md:border-r border-border flex items-center overflow-y-auto">
-      <div className="w-full flex flex-col lg:flex-row items-center lg:justify-between gap-8 lg:gap-12 py-8 lg:py-0 lg:ml-8 lg:pl-8">
+      <div className="w-full flex flex-col lg:flex-row items-center lg:justify-between gap-8 lg:gap-12 py-8 lg:py-0 lg:ml-8">
         {/* Left side - Content */}
         <article className="lg:-mt-8 max-w-lg flex flex-col gap-4 md:gap-6 px-4 lg:px-0 text-center lg:text-left">
           {/* Early bird badge - only visible when enhanced */}
@@ -78,23 +78,21 @@ export function Hero() {
             animate={{ opacity: enhanced ? 1 : 0.8 }}
             transition={{ duration: 0.4, delay: shouldAnimate && enhanced ? 0.1 : 0 }}
           >
-            Your next move is no longer a question. It&apos;s a priority.
+            Your <span className={enhanced ? "text-highlight" : ""}>next move is</span>{" "}
+            no longer a question. It&apos;s{" "}
+            <span className={enhanced ? "text-highlight" : ""}>a priority</span>.
           </motion.h1>
 
           <motion.div
-            className="text-base md:text-lg tracking-wide"
+            className="-mt-1 mb-4 text-base md:text-lg tracking-wide"
             style={{ opacity: enhanced ? 0.8 : 0.5 }}
             initial={false}
             animate={{ opacity: enhanced ? 0.8 : 0.5 }}
             transition={{ duration: 0.4, delay: shouldAnimate && enhanced ? 0.2 : 0 }}
           >
             <p>
-              Nextup analyzes your real growth data to forge the features your
-              users are actually searching for.
-            </p>
-            <p className="text-sm mt-2 opacity-70 hidden sm:block">
-              Get feature suggestions + prompts to vibe code in your favorite
-              IDE.
+              Nextup analyzes your web product data to forge the features your
+              users actually need.
             </p>
           </motion.div>
 
@@ -194,6 +192,16 @@ export function Hero() {
             </div>
             {state?.error && (
               <p className="text-red-400 text-sm mt-2">{state.error}</p>
+            )}
+            {enhanced && (
+              <motion.p
+                className="text-xs mt-3 opacity-50"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.5 }}
+                transition={{ duration: 0.4, delay: 0.5 }}
+              >
+                Get feature suggestions + prompts to vibe code in your favorite IDE.
+              </motion.p>
             )}
           </form>
         </article>
