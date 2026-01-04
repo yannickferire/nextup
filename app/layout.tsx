@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next"
 import { Micro_5, Funnel_Sans, Plus_Jakarta_Sans, Space_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -40,6 +41,7 @@ export default function RootLayout({
         className={`${micro5.variable} ${funnelSans.variable} ${plusJakarta.variable} ${spaceMono.variable}`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );
