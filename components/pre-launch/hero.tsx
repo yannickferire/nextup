@@ -72,7 +72,7 @@ export function Hero() {
           </div>
           )}
           <motion.h1
-            className={`text-3xl md:text-4xl lg:text-5xl tracking-wide text-balance ${enhanced ? "font-semibold" : ""}`}
+            className={`text-3xl md:text-4xl lg:text-5xl tracking-wide text-balance ${enhanced ? "font-medium" : ""}`}
             style={{ opacity: enhanced ? 1 : 0.8 }}
             initial={false}
             animate={{ opacity: enhanced ? 1 : 0.8 }}

@@ -30,6 +30,26 @@ export const metadata: Metadata = {
   description:
     "Nextup analyzes your web product data to forge the features your users actually need. Join the waitlist.",
   metadataBase: new URL("https://nextup.build"),
+  keywords: [
+    "feature prioritization",
+    "product analytics",
+    "user feedback",
+    "data-driven development",
+    "product management",
+    "feature suggestions",
+    "web product",
+    "SaaS tools",
+  ],
+  authors: [{ name: "Nextup" }],
+  creator: "Nextup",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
   openGraph: {
     title: "Nextup – What should you build next?",
     description:
@@ -44,6 +64,10 @@ export const metadata: Metadata = {
     title: "Nextup – What should you build next?",
     description:
       "Nextup analyzes your web product data to forge the features your users actually need.",
+    creator: "@nextupbuild",
+  },
+  alternates: {
+    canonical: "https://nextup.build",
   },
 };
 
