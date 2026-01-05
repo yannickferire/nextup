@@ -42,10 +42,10 @@ export function Hero() {
   const shouldAnimate = hasTransitioned;
 
   return (
-    <section className="flex-1 mx-4 md:mx-8 md:border-l md:border-r border-border flex items-center overflow-y-auto">
+    <section className="flex-1 mx-4 md:mx-8 md:border-l md:border-r border-border flex items-center">
       <div className="w-full flex flex-col lg:flex-row items-center lg:justify-between gap-8 lg:gap-12 py-8 lg:py-0 lg:ml-8">
         {/* Left side - Content */}
-        <article className="lg:-mt-8 max-w-lg flex flex-col gap-4 md:gap-6 px-4 lg:px-0 text-center lg:text-left">
+        <article className="lg:-mt-8 max-w-lg flex flex-col gap-4 md:gap-6 lg:px-0 text-center lg:text-left">
           {/* Early bird badge - only visible when enhanced */}
           {enhanced && (
           <div className="h-8 flex justify-center lg:justify-start">
@@ -55,9 +55,9 @@ export function Hero() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
                 >
-                  <span className="inline-flex items-center gap-2 text-xs md:text-sm border border-primary/30 bg-primary/5 rounded-full px-3 py-1.5">
-                    <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                    <span>
+                  <div className="inline-flex items-center gap-2 text-xs md:text-sm border border-primary/30 bg-primary/5 rounded-full px-3 py-1.5">
+                    <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+                    <p>
                       <span className="font-medium">
                         {spotsRemaining !== null ? spotsRemaining : "..."} early spots left
                       </span>
@@ -65,8 +65,8 @@ export function Hero() {
                         {" "}
                         — get a special offer at launch
                       </span>
-                    </span>
-                  </span>
+                    </p>
+                  </div>
                 </motion.div>
             </AnimatePresence>
           </div>
@@ -207,7 +207,7 @@ export function Hero() {
         </article>
 
         {/* Right side - Demo */}
-        <div className="relative shrink-0 w-full lg:w-auto px-4 lg:px-0">
+        <div className="relative shrink-0 w-full lg:w-auto px-0  sm:px-4 lg:px-0">
           {/* Glow effect - top */}
           <motion.div
             className="absolute -top-4 left-1/2 -translate-x-1/2 w-4/5 h-24 -z-10 blur-3xl rounded-full"

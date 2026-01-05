@@ -67,7 +67,7 @@ export function DemoSuggestion({
   isLoading,
 }: DemoSuggestionProps) {
   return (
-    <div className="border-t border-border p-3 sm:p-4 bg-foreground/5">
+    <div className="border-b lg:border-b-0 lg:border-t border-border p-3 sm:p-4 bg-foreground/5">
       <div className="flex flex-col gap-2 sm:gap-3">
         <div>
           <p className="text-[10px] sm:text-xs opacity-50 mb-1">Nextup suggestion</p>

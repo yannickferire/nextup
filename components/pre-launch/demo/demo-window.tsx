@@ -34,7 +34,7 @@ export function DemoWindow({ onApply, enhanced }: DemoWindowProps) {
   };
 
   return (
-    <div className="relative w-full lg:w-2xl border border-border lg:border-l lg:border-y lg:border-r-0 rounded-lg lg:rounded-l-lg lg:rounded-r-none overflow-hidden font-mono text-xs sm:text-sm bg-background">
+    <div className="relative w-full lg:w-xl xl:w-2xl border border-border lg:border-l lg:border-y lg:border-r-0 rounded-lg lg:rounded-l-lg lg:rounded-r-none overflow-hidden font-mono text-xs sm:text-sm bg-background">
       {/* Window header with macOS dots */}
       <div className="flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 border-b border-border bg-foreground/5">
         <div className="flex gap-1.5">
@@ -43,8 +43,17 @@ export function DemoWindow({ onApply, enhanced }: DemoWindowProps) {
           <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#28c840]" />
         </div>
         <p className="text-[10px] sm:text-xs opacity-50 ml-2 truncate">
-          <span className="opacity-25 hidden sm:inline">https://</span>nextup.build<span className="hidden sm:inline"> – analysis</span>
+          <span className="opacity-25">https://</span>nextup.build – analysis
         </p>
+      </div>
+
+      {/* Suggestion area - mobile/tablet only (before tabs) */}
+      <div className="lg:hidden">
+        <DemoSuggestion
+          onApply={handleApply}
+          enhanced={enhanced}
+          isLoading={isLoading}
+        />
       </div>
 
       {/* Tabs */}
@@ -69,12 +78,14 @@ export function DemoWindow({ onApply, enhanced }: DemoWindowProps) {
         <DemoContent activeTab={activeTab} />
       </div>
 
-      {/* Suggestion area */}
-      <DemoSuggestion
-        onApply={handleApply}
-        enhanced={enhanced}
-        isLoading={isLoading}
-      />
+      {/* Suggestion area - desktop only (after content) */}
+      <div className="hidden lg:block">
+        <DemoSuggestion
+          onApply={handleApply}
+          enhanced={enhanced}
+          isLoading={isLoading}
+        />
+      </div>
     </div>
   );
 }

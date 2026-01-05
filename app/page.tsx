@@ -4,7 +4,7 @@ import { Hero } from "@/components/pre-launch/hero";
 
 export default function Home() {
   return (
-    <main className="flex flex-col h-screen">
+    <main className="flex flex-col md:h-screen">
       <PreLaunchHeader />
       <Hero />
       <PreLaunchFooter />
