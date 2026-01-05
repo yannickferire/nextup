@@ -26,8 +26,25 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "nextup",
-  description: "nextup",
+  title: "Nextup – Data-driven features for your users",
+  description:
+    "Nextup analyzes your web product data to forge the features your users actually need. Join the waitlist.",
+  metadataBase: new URL("https://nextup.build"),
+  openGraph: {
+    title: "Nextup – What should you build next?",
+    description:
+      "Nextup analyzes your web product data to forge the features your users actually need.",
+    url: "https://nextup.build",
+    siteName: "Nextup",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nextup – What should you build next?",
+    description:
+      "Nextup analyzes your web product data to forge the features your users actually need.",
+  },
 };
 
 export default function RootLayout({
