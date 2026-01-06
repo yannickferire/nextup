@@ -61,13 +61,25 @@ function SpinnerIcon({ className }: { className?: string }) {
   );
 }
 
+const containerStyle: React.CSSProperties = {
+  borderBottom: 'var(--lg-border-bottom, 1px solid var(--editor-border))',
+  borderTop: 'var(--lg-border-top, none)',
+  background: 'var(--editor-header-bg)',
+};
+
 export function DemoSuggestion({
   onApply,
   enhanced,
   isLoading,
 }: DemoSuggestionProps) {
+  const buttonStyle: React.CSSProperties = {
+    background: enhanced ? 'var(--editor-text)' : 'var(--editor-btn-bg)',
+    color: enhanced ? 'var(--editor-bg)' : 'var(--editor-btn-text)',
+    opacity: enhanced ? 0.3 : 1,
+  };
+
   return (
-    <div className="border-b lg:border-b-0 lg:border-t border-border p-3 sm:p-4 bg-foreground/5">
+    <div className="p-3 sm:p-4" style={containerStyle}>
       <div className="flex flex-col gap-2 sm:gap-3">
         <div>
           <p className="text-[10px] sm:text-xs opacity-50 mb-1">Nextup suggestion</p>
@@ -88,11 +100,8 @@ export function DemoSuggestion({
           <Button
             onClick={onApply}
             disabled={enhanced || isLoading}
-            className={`h-10 sm:h-12 px-4 sm:px-6 text-sm sm:text-base ${
-              enhanced
-                ? "bg-foreground/10 text-foreground/50"
-                : "bg-white text-black hover:bg-white/90"
-            }`}
+            className="h-10 sm:h-12 px-4 sm:px-6 text-sm sm:text-base"
+            style={buttonStyle}
           >
             {isLoading ? (
               <>

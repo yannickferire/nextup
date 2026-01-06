@@ -1,12 +1,51 @@
 @import "tailwindcss";
 
+/* Dark mode (default) */
 :root {
   --background: #0a0a0a;
   --foreground: #ededed;
   --border: color-mix(in srgb, var(--foreground) 20%, transparent);
   --primary: #8b2c0d;
   --primary-foreground: #ffffff;
+  --glow-opacity: 0.3;
+  /* Editor colors */
+  --editor-bg: #0a0a0a;
+  --editor-text: #ededed;
+  --editor-border: rgba(237, 237, 237, 0.2);
+  --editor-header-bg: rgba(237, 237, 237, 0.05);
+  --editor-content-bg: rgba(237, 237, 237, 0.02);
+  --editor-btn-bg: #ffffff;
+  --editor-btn-text: #000000;
+  /* Syntax colors */
+  --syntax-orange: #fdba74;
+  --syntax-blue: #7dd3fc;
+  --syntax-green: #6ee7b7;
+  --syntax-purple: #c4b5fd;
+  color-scheme: dark;
 }
+
+/* Light mode via class (manual toggle) */
+:root.light {
+  --background: #e7e7e7;
+  --foreground: #0a0a0a;
+  --border: color-mix(in srgb, var(--foreground) 20%, transparent);
+  --glow-opacity: 0.4;
+  /* Editor colors */
+  --editor-bg: #e0e0e0;
+  --editor-text: #1a1a1a;
+  --editor-border: rgba(0, 0, 0, 0.12);
+  --editor-header-bg: rgba(0, 0, 0, 0.04);
+  --editor-content-bg: rgba(255, 255, 255, 0.2);
+  --editor-btn-bg: #1a1a1a;
+  --editor-btn-text: #ffffff;
+  /* Syntax colors */
+  --syntax-orange: #c2410c;
+  --syntax-blue: #0284c7;
+  --syntax-green: #059669;
+  --syntax-purple: #7c3aed;
+  color-scheme: light;
+}
+
 
 @theme inline {
   --color-background: var(--background);
@@ -50,4 +89,28 @@ pre {
   background-clip: text;
   color: transparent;
   padding-right: 1px; padding-left: 1px;
+}
+
+.glow-effect {
+  background: var(--primary);
+  opacity: 0;
+  transition: opacity 0.8s ease-out, scale 0.8s ease-out;
+  scale: 0.8;
+}
+
+.glow-effect.active {
+  opacity: var(--glow-opacity);
+  scale: 1;
+}
+
+.glow-effect-subtle {
+  background: var(--primary);
+  opacity: 0;
+  transition: opacity 0.8s ease-out 0.15s, scale 0.8s ease-out 0.15s;
+  scale: 0.8;
+}
+
+.glow-effect-subtle.active {
+  opacity: calc(var(--glow-opacity) * 0.66);
+  scale: 1;
 }

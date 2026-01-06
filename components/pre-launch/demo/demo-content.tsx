@@ -189,17 +189,15 @@ const content: Record<TabId, Line[]> = {
       { text: " → ", color: "gray" },
       { text: "High", color: "green" },
     ],
-    empty(),
-    empty(),
   ],
 };
 
-const colorClasses: Record<string, string> = {
-  orange: "text-orange-300/80",
-  blue: "text-sky-300/80",
-  green: "text-emerald-300/70",
-  purple: "text-violet-300/80",
-  gray: "opacity-40",
+const colorStyles: Record<string, React.CSSProperties> = {
+  orange: { color: 'var(--syntax-orange)' },
+  blue: { color: 'var(--syntax-blue)' },
+  green: { color: 'var(--syntax-green)' },
+  purple: { color: 'var(--syntax-purple)' },
+  gray: { opacity: 0.4 },
 };
 
 export function DemoContent({ activeTab }: DemoContentProps) {
@@ -229,7 +227,7 @@ export function DemoContent({ activeTab }: DemoContentProps) {
             {line.map((segment, j) => (
               <span
                 key={j}
-                className={segment.color ? colorClasses[segment.color] : ""}
+                style={segment.color ? colorStyles[segment.color] : undefined}
               >
                 {segment.text}
               </span>

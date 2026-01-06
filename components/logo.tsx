@@ -6,7 +6,7 @@ interface LogoProps {
 export function Logo({ showDomain = true, className = "" }: LogoProps) {
   return (
     <p className={`logo text-2xl sm:text-4xl tracking-wider group cursor-pointer ${className}`}>
-      next<span className="relative -top-0.75 transition-all duration-400 ease-[cubic-bezier(0.7,0,0.84,0)] group-hover:top-0">u</span>p
+      next<span className="relative -top-0.75 transition-[top] duration-400 ease-[cubic-bezier(0.7,0,0.84,0)] group-hover:top-0">u</span>p
       {showDomain && <span className="opacity-20">.build</span>}
     </p>
   );

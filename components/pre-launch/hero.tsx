@@ -115,7 +115,7 @@ export function Hero() {
                     }
                     className={`h-12 transition-all duration-500 ${
                       enhanced
-                        ? "border-white/50 text-white placeholder:text-white/70"
+                        ? "border-foreground/50 text-foreground placeholder:text-foreground/70"
                         : ""
                     }`}
                     style={{
@@ -127,26 +127,16 @@ export function Hero() {
 
               <motion.div
                 initial={false}
-                style={{
-                  background: enhanced
-                    ? "linear-gradient(to right, #8b2c0d, #6b2008)"
-                    : "rgb(255, 255, 255)",
-                }}
-                animate={{
-                  background: enhanced
-                    ? "linear-gradient(to right, #8b2c0d, #6b2008)"
-                    : "rgb(255, 255, 255)",
-                }}
                 transition={{ duration: 0.4, delay: shouldAnimate && enhanced ? 0.4 : 0 }}
-                className="rounded-md"
+                className={`rounded-md ${enhanced ? "bg-linear-to-r from-primary to-[#6b2008]" : "bg-foreground"}`}
               >
                 <Button
                   type={state?.success ? "button" : "submit"}
                   disabled={isPending}
                   className={`h-12 px-6 ring-offset-background transition-all duration-500 text-base font-semibold ${
                     enhanced
-                      ? "bg-transparent text-white hover:ring-2 hover:ring-primary/90 hover:ring-offset-2"
-                      : "bg-transparent text-black hover:bg-white/90"
+                      ? "bg-transparent text-primary-foreground hover:ring-2 hover:ring-primary/90 hover:ring-offset-2"
+                      : "bg-transparent text-background hover:bg-foreground/90"
                   } ${state?.success ? "cursor-default" : ""}`}
                   style={{
                     transitionDelay: shouldAnimate && enhanced ? "400ms" : "0ms",
@@ -207,58 +197,19 @@ export function Hero() {
         </article>
 
         {/* Right side - Demo */}
-        <div className="relative shrink-0 w-full lg:w-auto px-0  sm:px-4 lg:px-0">
+        <div className="relative shrink-0 w-full lg:w-auto px-0 sm:px-4 lg:px-0">
           {/* Glow effect - top */}
-          <motion.div
-            className="absolute -top-4 left-1/2 -translate-x-1/2 w-4/5 h-24 -z-10 blur-3xl rounded-full"
-            style={{
-              background: "var(--primary)",
-              opacity: enhanced ? 0.3 : 0,
-            }}
-            initial={false}
-            animate={{
-              opacity: enhanced ? 0.3 : 0,
-            }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+          <div
+            className={`absolute -top-4 left-1/2 -translate-x-1/2 w-4/5 h-24 -z-10 blur-3xl rounded-full glow-effect ${enhanced ? "active" : ""}`}
           />
           {/* Glow effect - left */}
-          <motion.div
-            className="absolute -left-10 top-[55%] -translate-y-1/2 w-28 h-4/5 -z-10 blur-3xl rounded-full"
-            style={{
-              background: "var(--primary)",
-              opacity: enhanced ? 0.3 : 0,
-            }}
-            initial={false}
-            animate={{
-              opacity: enhanced ? 0.3 : 0,
-            }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
-          />
-          {/* Glow effect - right (only on desktop) */}
-          <motion.div
-            className="hidden lg:block absolute -right-10 top-[55%] -translate-y-1/2 w-28 h-4/5 -z-10 blur-3xl rounded-full"
-            style={{
-              background: "var(--primary)",
-              opacity: enhanced ? 0.3 : 0,
-            }}
-            initial={false}
-            animate={{
-              opacity: enhanced ? 0.3 : 0,
-            }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+          <div
+            className={`absolute -left-10 top-[55%] -translate-y-1/2 w-44 h-4/5 -z-10 blur-3xl rounded-full glow-effect ${enhanced ? "active" : ""}`}
+            style={{ transitionDelay: "0.1s" }}
           />
           {/* Glow effect - bottom */}
-          <motion.div
-            className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-4/5 h-20 -z-10 blur-3xl rounded-full"
-            style={{
-              background: "var(--primary)",
-              opacity: enhanced ? 0.2 : 0,
-            }}
-            initial={false}
-            animate={{
-              opacity: enhanced ? 0.2 : 0,
-            }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.15 }}
+          <div
+            className={`absolute -bottom-6 left-1/2 -translate-x-1/2 w-4/5 h-20 -z-10 blur-3xl rounded-full glow-effect-subtle ${enhanced ? "active" : ""}`}
           />
           <DemoWindow
             enhanced={enhanced}
