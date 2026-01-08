@@ -1,9 +1,7 @@
 "use client";
 
-import { useSyncExternalStore, useCallback } from "react";
+import { useCallback } from "react";
 import { Button } from "@/components/ui/button";
-
-type Theme = "light" | "dark";
 
 function SunIcon({ className }: { className?: string }) {
   return (
@@ -45,60 +43,32 @@ function MoonIcon({ className }: { className?: string }) {
   );
 }
 
-function applyTheme(theme: Theme) {
+function toggleThemeClass() {
   const root = document.documentElement;
+  const isCurrentlyLight = root.classList.contains("light");
+  const newTheme = isCurrentlyLight ? "dark" : "light";
+
   root.classList.remove("light", "dark");
-
-  if (theme === "light") {
-    root.classList.add("light");
-  } else if (theme === "dark") {
-    root.classList.add("dark");
-  }
-}
-
-function getThemeSnapshot(): Theme | null {
-  return localStorage.getItem("theme") as Theme | null;
-}
-
-function subscribeToTheme(callback: () => void) {
-  window.addEventListener("storage", callback);
-  return () => {
-    window.removeEventListener("storage", callback);
-  };
-}
-
-function getIsDarkSnapshot(): boolean {
-  const theme = getThemeSnapshot();
-  // dark is default, only light if explicitly set
-  return theme !== "light";
-}
-
-function getIsDarkServerSnapshot(): boolean {
-  return true; // dark mode is default
+  root.classList.add(newTheme);
+  localStorage.setItem("theme", newTheme);
 }
 
 export function ThemeToggle() {
-  const isDark = useSyncExternalStore(subscribeToTheme, getIsDarkSnapshot, getIsDarkServerSnapshot);
-
-  const toggleTheme = useCallback(() => {
-    const newTheme: Theme = isDark ? "light" : "dark";
-    localStorage.setItem("theme", newTheme);
-    applyTheme(newTheme);
-    window.dispatchEvent(new Event("storage"));
-  }, [isDark]);
+  const handleClick = useCallback(() => {
+    toggleThemeClass();
+  }, []);
 
   return (
     <Button
       variant="outline"
       size="icon"
-      onClick={toggleTheme}
-      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      onClick={handleClick}
+      aria-label="Toggle theme"
     >
-      {isDark ? (
-        <SunIcon className="size-5" />
-      ) : (
-        <MoonIcon className="size-5" />
-      )}
+      {/* Dark mode: show sun (to switch to light) */}
+      <SunIcon className="size-5 theme-icon-sun" />
+      {/* Light mode: show moon (to switch to dark) */}
+      <MoonIcon className="size-5 theme-icon-moon" />
     </Button>
   );
 }

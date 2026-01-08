@@ -114,3 +114,20 @@ pre {
   opacity: calc(var(--glow-opacity) * 0.66);
   scale: 1;
 }
+
+/* Theme toggle icons */
+.theme-icon-sun {
+  display: block;
+}
+
+.theme-icon-moon {
+  display: none;
+}
+
+:root.light .theme-icon-sun {
+  display: none;
+}
+
+:root.light .theme-icon-moon {
+  display: block;
+}
