@@ -1,45 +1,6 @@
 import { Button } from "@/components/ui/button";
-
-interface DemoSuggestionProps {
-  onApply: () => void;
-  enhanced: boolean;
-  isLoading: boolean;
-}
-
-function BuildIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect x="2" y="6" width="20" height="12" rx="2" />
-      <path d="M12 12h.01" />
-      <path d="M17 12h.01" />
-      <path d="M7 12h.01" />
-    </svg>
-  );
-}
-
-function CheckIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={3}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 13l4 4L19 7" />
-    </svg>
-  );
-}
+import { HugeiconsIcon } from "@hugeicons/react";
+import { MagicWand01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
 
 function SpinnerIcon({ className }: { className?: string }) {
   return (
@@ -59,6 +20,12 @@ function SpinnerIcon({ className }: { className?: string }) {
       />
     </svg>
   );
+}
+
+interface DemoSuggestionProps {
+  onApply: () => void;
+  enhanced: boolean;
+  isLoading: boolean;
 }
 
 const containerStyle: React.CSSProperties = {
@@ -105,19 +72,19 @@ export function DemoSuggestion({
           >
             {isLoading ? (
               <>
-                <SpinnerIcon className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                <SpinnerIcon className="w-4.5 h-4.5 animate-spin" />
                 <span className="hidden sm:inline">Apply suggestion</span>
                 <span className="sm:hidden">Applying...</span>
               </>
             ) : enhanced ? (
               <>
-                <CheckIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                <HugeiconsIcon icon={Tick02Icon} size={18} />
                 <span className="hidden sm:inline">Feature applied</span>
                 <span className="sm:hidden">Applied</span>
               </>
             ) : (
               <>
-                <BuildIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                <HugeiconsIcon icon={MagicWand01Icon} size={18} />
                 <span className="hidden sm:inline">Apply suggestion</span>
                 <span className="sm:hidden">Apply</span>
               </>

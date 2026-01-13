@@ -1,0 +1,283 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ============================================
+// USERS & WORKSPACES (Multi-tenant)
+// ============================================
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  emailVerified Boolean  @default(false)
+  name          String?
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  sessions          Session[]
+  accounts          Account[]
+  workspaceMembers  WorkspaceMember[]
+  connectedAccounts ConnectedAccount[]
+  feedbacks         Feedback[]
+  generatedFeatures GeneratedFeature[]
+  chatMessages      ChatMessage[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  expiresAt DateTime
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  idToken               String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Workspace {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members           WorkspaceMember[]
+  projects          Project[]
+  feedbacks         Feedback[]
+  generatedFeatures GeneratedFeature[]
+}
+
+model WorkspaceMember {
+  id        String        @id @default(cuid())
+  role      WorkspaceRole @default(MEMBER)
+  createdAt DateTime      @default(now())
+
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, workspaceId])
+}
+
+enum WorkspaceRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+// ============================================
+// PROJECTS & CONNECTED ACCOUNTS
+// ============================================
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  domain      String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workspaceId       String
+  workspace         Workspace           @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  connectedAccounts ConnectedAccount[]
+  scrapedPages      ScrapedPage[]
+  searchConsoleData SearchConsoleData[]
+  feedbacks         Feedback[]
+  generatedFeatures GeneratedFeature[]
+
+  @@unique([workspaceId, domain])
+}
+
+model ConnectedAccount {
+  id                String          @id @default(cuid())
+  provider          AccountProvider
+  providerAccountId String
+  accessToken       String
+  refreshToken      String?
+  expiresAt         DateTime?
+  scopes            String[]
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, projectId, provider])
+}
+
+enum AccountProvider {
+  GOOGLE_SEARCH_CONSOLE
+}
+
+// ============================================
+// DATA INGESTION
+// ============================================
+
+model ScrapedPage {
+  id           String       @id @default(cuid())
+  url          String
+  title        String?
+  content      String?
+  metadata     Json?
+  status       ScrapeStatus @default(PENDING)
+  errorMessage String?
+  scrapedAt    DateTime?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, url])
+}
+
+enum ScrapeStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model SearchConsoleData {
+  id          String   @id @default(cuid())
+  query       String
+  page        String
+  clicks      Int      @default(0)
+  impressions Int      @default(0)
+  ctr         Float    @default(0)
+  position    Float    @default(0)
+  date        DateTime
+  createdAt   DateTime @default(now())
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, query, page, date])
+  @@index([projectId, date])
+  @@index([projectId, impressions(sort: Desc)])
+}
+
+model Feedback {
+  id        String             @id @default(cuid())
+  source    FeedbackSource
+  content   String
+  sentiment FeedbackSentiment?
+  category  String?
+  metadata  Json?
+  createdAt DateTime           @default(now())
+
+  projectId     String
+  project       Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  workspaceId   String
+  workspace     Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  submittedById String?
+  submittedBy   User?     @relation(fields: [submittedById], references: [id])
+
+  @@index([projectId, createdAt])
+}
+
+enum FeedbackSource {
+  WIDGET
+  MANUAL
+  INTERCOM
+  ZENDESK
+}
+
+enum FeedbackSentiment {
+  POSITIVE
+  NEUTRAL
+  NEGATIVE
+}
+
+// ============================================
+// FEATURE GENERATION ENGINE
+// ============================================
+
+model GeneratedFeature {
+  id           String        @id @default(cuid())
+  title        String
+  description  String
+  rationale    String
+  priority     Int           @default(0)
+  status       FeatureStatus @default(DRAFT)
+  dataSnapshot Json
+  cursorPrompt String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  projectId    String
+  project      Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  workspaceId  String
+  workspace    Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdById  String
+  createdBy    User          @relation(fields: [createdById], references: [id])
+  chatMessages ChatMessage[]
+
+  @@index([projectId, priority(sort: Desc)])
+}
+
+enum FeatureStatus {
+  DRAFT
+  REFINED
+  APPROVED
+  ARCHIVED
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  role      ChatRole
+  content   String
+  createdAt DateTime @default(now())
+
+  featureId String
+  feature   GeneratedFeature @relation(fields: [featureId], references: [id], onDelete: Cascade)
+  userId    String?
+  user      User?            @relation(fields: [userId], references: [id])
+
+  @@index([featureId, createdAt])
+}
+
+enum ChatRole {
+  USER
+  ASSISTANT
+  SYSTEM
+}

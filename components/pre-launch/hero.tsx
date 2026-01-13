@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DemoWindow } from "./demo";
 import { joinWaitlist, getEarlySpotsRemaining } from "@/app/actions/waitlist";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { SentIcon, Tick02Icon } from "@hugeicons/core-free-icons";
 
 export function Hero() {
   const id = useId();
@@ -143,27 +145,17 @@ export function Hero() {
                   }}
                 >
                   {enhanced && !state?.success && (
-                    <motion.svg
+                    <motion.span
                       initial={{ opacity: 0, scale: 0.5 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.3, delay: 0.5 }}
-                      className="w-5 h-5"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
                     >
-                      <path d="M22 2L11 13" />
-                      <path d="M22 2L15 22L11 13L2 9L22 2Z" />
-                    </motion.svg>
+                      <HugeiconsIcon icon={SentIcon} size={20} />
+                    </motion.span>
                   )}
                   {state?.success ? (
                     <span className="flex items-center gap-2">
-                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                        <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
+                      <HugeiconsIcon icon={Tick02Icon} size={20} />
                       You&apos;re in!
                     </span>
                   ) : isPending ? (
